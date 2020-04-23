@@ -118,7 +118,7 @@ class App extends Component {
               />
               <Route exact path='/about' component={About} />
               <Route exact path='/user/:username' render={(props) => (
-                <User {...props} user={user} getUser={this.getUser} />
+                <User {...props} user={user} getUser={this.getUser} loading={this.state.loading} />
                 )} 
               />
             </Switch>

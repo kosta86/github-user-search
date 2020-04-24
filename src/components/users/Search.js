@@ -1,22 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 
-class Search extends Component {
-  state = {
+function Search(props) {
+  const [ state, setState ] = useState({
     text: '',
     removeAlert: false
-  };
+  });
 
-  static propTypes = {
-    searchUsers: PropTypes.func.isRequired,
-    clearUsers: PropTypes.func.isRequired,
-    showClearBtn: PropTypes.bool.isRequired,
-    setAlert: PropTypes.func.isRequired
-  }
+  let { showClearBtn, clearUsers, onChange, onSubmit } = props; // destructured props
+
+  
 
   onChange = (e) => {
-    this.setState({
+    setState({
       [e.target.name]: e.target.value,
       removeAlert: true
     })
@@ -26,11 +23,11 @@ class Search extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.text === '') {
-      this.props.setAlert('Please enter something', 'light');
+    if (state.text === '') {
+      props.setAlert('Please enter something', 'light');
     } else {
-      this.props.searchUsers(this.state.text);
-      this.setState({
+      props.searchUsers(state.text);
+      setState({
         text: ''
       })
     }
@@ -38,22 +35,31 @@ class Search extends Component {
   }
 
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.text !== this.state.text && this.state.text !== '') {
-      this.props.searchUsers(this.state.text);
-      this.props.removeAlert(this.state.removeAlert);
+  /* componentDidUpdate(prevProps, prevState) {
+    if (prevState.text !== state.text && state.text !== '') {
+      props.searchUsers(state.text);
+      props.removeAlert(state.removeAlert);
     }
 
-  }
+  } */
 
-  render() {
+  /* const refHook = useRef(false);
+  
+  if (refHook.current) {
+    
+      props.searchUsers(state.text);
+      props.removeAlert(state.removeAlert);
+    
+  } */
 
-    const { showClearBtn, clearUsers } = this.props; // destructured props
+  
+
+    
 
     return (
       <div>
-        <form onSubmit={this.onSubmit} >
-          <input type="text" name="text" placeholder="Search Users..." value={this.state.text} onChange={this.onChange} />
+        <form onSubmit={onSubmit} >
+          <input type="text" name="text" placeholder="Search Users..." value={state.text} onChange={onChange} />
           <input type="submit" value="Search" className="btn btn-dark btn-block" />
         </form>
         {showClearBtn && 
@@ -62,9 +68,17 @@ class Search extends Component {
 
       </div>
     )
-  }
+}
+
+Search.propTypes = {
+  searchUsers: PropTypes.func.isRequired,
+  clearUsers: PropTypes.func.isRequired,
+  showClearBtn: PropTypes.bool.isRequired,
+  setAlert: PropTypes.func.isRequired
 }
 
 
 
 export default Search
+
+

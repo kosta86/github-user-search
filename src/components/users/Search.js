@@ -1,35 +1,36 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import GithubContext from '../../context/github/githubContext';
 
 
 function Search(props) {
-  const [ state, setState ] = useState({
-    text: '',
-    removeAlert: false
-  });
+  const githubContext = useContext(GithubContext)
 
-  let { showClearBtn, clearUsers, onChange, onSubmit } = props; // destructured props
+  const [ text, setText ] = useState('');
+  /* const [ alert, setAlert ] = useState(false); */
 
-  
+  const { showClearBtn, clearUsers, showAlert, removeAlert } = props; // destructured props
 
-  onChange = (e) => {
-    setState({
-      [e.target.name]: e.target.value,
-      removeAlert: true
-    })
+
+  const onChange = (e) => {
+    
+    setText(e.target.value);
+    removeAlert(true);
+    if(e.target.value !== '') {
+      githubContext.searchUsers(e.target.value);
+    }
+    
     
     
   }
 
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    if (state.text === '') {
-      props.setAlert('Please enter something', 'light');
+    if (text === '') {
+      showAlert('Please enter something', 'light');
     } else {
-      props.searchUsers(state.text);
-      setState({
-        text: ''
-      })
+      githubContext.searchUsers(text);
+      setText('');
     }
     
   }
@@ -47,10 +48,15 @@ function Search(props) {
   
   if (refHook.current) {
     
-      props.searchUsers(state.text);
-      props.removeAlert(state.removeAlert);
+      searchUsers(state.text);
+      removeAlert(state.removeAlert);
     
   } */
+
+
+
+
+  
 
   
 
@@ -59,7 +65,7 @@ function Search(props) {
     return (
       <div>
         <form onSubmit={onSubmit} >
-          <input type="text" name="text" placeholder="Search Users..." value={state.text} onChange={onChange} />
+          <input type="text" name="text1" placeholder="Search Users..." value={text} onChange={onChange} />
           <input type="submit" value="Search" className="btn btn-dark btn-block" />
         </form>
         {showClearBtn && 
@@ -71,10 +77,9 @@ function Search(props) {
 }
 
 Search.propTypes = {
-  searchUsers: PropTypes.func.isRequired,
   clearUsers: PropTypes.func.isRequired,
   showClearBtn: PropTypes.bool.isRequired,
-  setAlert: PropTypes.func.isRequired
+  showAlert: PropTypes.func.isRequired
 }
 
 

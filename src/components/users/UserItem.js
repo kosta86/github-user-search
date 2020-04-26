@@ -16,9 +16,6 @@ function UserItem(props) {
   )
 }
 
-UserItem.propTypes = {
-  user: PropTypes.object.isRequired
-}
 
 
 export default UserItem

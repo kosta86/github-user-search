@@ -25,11 +25,6 @@ function Users() {
   
 }
 
-Users.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  users: PropTypes.array.isRequired,
-}
-
 const userStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',

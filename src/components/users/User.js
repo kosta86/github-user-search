@@ -4,17 +4,17 @@ import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
 import GithubContext from '../../context/github/githubContext';
 
-function User({ match}) {
+function User({ match }) {
   const githubContext = useContext(GithubContext);
 
   const { user, loading, getUser, getUserRepos, repos } = githubContext;
-
+  
   useEffect(() => {
     getUser(match.params.username);
     getUserRepos(match.params.username);
     // eslint-disable-next-line
   }, []) // empty array is passed in as a second argument which we can fill in with props so when passed props to array change then useEffect function fires,
-         // ifempty array is passed in useEffect metod only runs once on page load(like on componentDidMount)
+  // ifempty array is passed in useEffect metod only runs once on page load(like on componentDidMount)
 
   const {
     login,
@@ -32,7 +32,7 @@ function User({ match}) {
     following,
   } = user;
 
-  
+
 
   if (loading) return <Spinner loading={loading} />
 
